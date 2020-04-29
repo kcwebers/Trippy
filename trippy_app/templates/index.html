@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Trippy</title>
+</head>
+<body>
+    <div class="container">
+    <h1 class="display-1">Welcome! Let's Travel</h1>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="text-danger small"> {{ message }} </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+<!-- -----------------------------------------Register -->
+    <div class="row">
+        <div class="col form-group">
+            <h2>Registration</h2>
+
+            <form action="/register" method="POST">
+                {% csrf_token %}
+                <label>First Name</label>
+                    <input class="form-control" type="text" name="first_name">
+
+                <label>Last Name</label>
+                    <input class="form-control" type="text" name="last_name">
+
+                <label>Email</label>
+                    <input class="form-control" type="text" name="email">
+
+                <label>Password</label>
+                    <input class="form-control" type="password" name="password">
+
+                <label>Password Confirmation</label>
+                    <input class="form-control" type="password" name="pass_conf">
+
+                <input class="btn btn-info mt-2" type="submit" value="Register!">
+            </form>
+        </div> <!-- End of Register col -->
+
+<!-- -----------------------------------------Login -->
+        <div class="col">
+            <h2>Login</h2>
+
+            <form action="/login" method="POST">
+                {% csrf_token %}
+                <label>Email</label>
+                    <input class="form-control" type="text" name="email_input">
+
+                <label>Password</label>
+                    <input class="form-control" type="password" name="password_input">
+
+                <input class="btn btn-info mt-2" type="submit" value="Login!">
+            </form>
+        </div> <!-- End of Login col -->
+
+    </div><!-- End of Row -->
+
+    </div> <!-- End of container -->
+</body>
+</html>

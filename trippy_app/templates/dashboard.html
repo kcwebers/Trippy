@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Trippy</title>
+</head>
+<body>
+    <div class="container">
+        <a class="btn btn-danger float-right mt-2 ml-2" href="/logout">Logout</a>
+        <a class="btn btn-info float-right mt-2" href="/trips/new">Create New Trip</a>
+        <h1>Welcome {{user.first_name}}! Made it to the dashboard!</h1>
+
+        <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Plan</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for trip in trips %}
+                    {% if trip.creator == user %}
+                    <tr>
+                        <th scope="row"><a href="/trips/{{trip.id}}">{{trip.dest}}</a></th>
+                        <td>{{trip.start}}</td>
+                        <td>{{trip.end}}</td>
+                        <td>{{trip.plan}}</td>
+                        <td>
+                            <a class="btn btn-dark" href="trips/edit/{{trip.id}}">Edit</a>
+                            <a class="btn btn-light ml-2" href="trips/delete/{{trip.id}}">Delete Trip</a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+              </table>
+              
+    </div><!-- End of container -->
+</body>
+</html>
