@@ -20,18 +20,18 @@
 
         <div class="form-group">
 
-            <label class="form-control">Start Date: <span class="text-danger">{{trip.start}}</span></label>
+            <label class="form-control">Start Date: <span class="text-info">{{trip.start}}</span></label>
 
-            <label class="form-control">End Date: <span class="text-danger">{{trip.end}}</span></label>
+            <label class="form-control">End Date: <span class="text-info">{{trip.end}}</span></label>
 
-            <label class="form-control">Trip Created On: <span class="text-danger">{{trip.created_at}}</span></label>
+            <label class="form-control">Trip Created On: <span class="text-info">{{trip.created_at}}</span></label>
 
-            <label class="form-control">Trip Last Updated On: <span class="text-danger">{{trip.updated_at}}</span></label>
+            <label class="form-control">Trip Last Updated On: <span class="text-info">{{trip.updated_at}}</span></label>
 
-            <label class="form-control">Plan: <span class="text-danger">{{trip.plan}}</span></label>
+            <label class="form-control">Plan: <span class="text-info">{{trip.plan}}</span></label>
 
             <!-- for relationship field, need to access field w/i trip and then access fields w/i the related model (trip -> user (via 'creator' field) -> first name & last name) -->
-            <label class="form-control">Created By: <span class="text-danger">{{trip.creator.first_name}} {{trip.creator.last_name}}</span></label>
+            <label class="form-control">Created By: <span class="text-info">{{trip.creator.first_name}} {{trip.creator.last_name}}</span></label>
         </div>
 
     </div><!-- End of container -->
