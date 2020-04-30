@@ -55,7 +55,7 @@ def dashboard(request):
         errors = User.objects.not_logged_validator()
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
         user_id = request.session['user_id']
@@ -75,7 +75,7 @@ def create_trip(request):
         errors = User.objects.not_logged_validator()
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
         user_id = request.session['user_id']
@@ -115,7 +115,7 @@ def show_trip(request, id):
         errors = User.objects.not_logged_validator()
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
         user_id = request.session['user_id']
@@ -135,7 +135,7 @@ def edit_trip(request, id):
         errors = User.objects.not_logged_validator()
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
 
