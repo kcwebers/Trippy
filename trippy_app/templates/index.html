@@ -19,6 +19,11 @@
 
             <form action="/register" method="POST">
                 {% csrf_token %}
+
+            <!-- Jinja statements ({% ... %}) handle validations -->
+            <!-- Validations coordinate with views.py and models.py -->
+
+            <!-- Registration fields: first name, last name, email address, password, and a password confirmation -->
                 <label>First Name
                     {% if messages %}
                         {% for message in messages %}
@@ -28,7 +33,6 @@
                         {% endfor %}
                     {% endif %}
                 </label>
-
                     <input class="form-control" type="text" name="first_name">
 
                 <label>Last Name
@@ -85,10 +89,12 @@
 
             <form action="/login" method="POST">
                 {% csrf_token %}
-                <!-- Input fields only include EMAIL and PASSWORD for validations -->
+                <!-- Login fields only include EMAIL and PASSWORD for validations -->
+
                 <label>Email
                     {% if messages %}
                         {% for message in messages %}
+                        <!-- Both validation messages handled at same place -->
                             {% if message.extra_tags == 'email_input' or message.extra_tags == 'password_input' %}
                             <span class="text-danger small"> {{ message }} </span>
                             {% endif %}
