@@ -12,14 +12,6 @@
     <div class="container">
     <h1 class="display-1">Welcome! Let's Travel</h1>
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li class="text-danger small"> {{ message }} </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
 <!-- -----------------------------------------Register -->
     <div class="row">
         <div class="col form-group">
@@ -89,12 +81,20 @@
 
 <!-- -----------------------------------------Login -->
         <div class="col">
-            <h2>Login</h2>
+            <h2>Login </h2>
 
             <form action="/login" method="POST">
                 {% csrf_token %}
                 <!-- Input fields only include EMAIL and PASSWORD for validations -->
-                <label>Email</label>
+                <label>Email
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == 'email_input' or message.extra_tags == 'password_input' %}
+                            <span class="text-danger small"> {{ message }} </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </label>
                     <input class="form-control" type="text" name="email_input">
 
                 <label>Password</label>
