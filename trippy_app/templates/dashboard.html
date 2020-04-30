@@ -13,36 +13,67 @@
         <a class="btn btn-info float-right mt-2" href="/trips/new">Create New Trip</a>
         <h1>Welcome <span class="text-danger">{{user.first_name}}</span>! This is your Dashboard!</h1>
 
+        <!-- Table for trips arranged by user in session -->
+
         <table class="table">
-                <thead class="thead-dark">
-                  <tr>
+            <thead class="thead-dark">
+                <tr>
                     <th scope="col">Destination</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
                     <th scope="col">Plan</th>
+                    <!-- user able to edit or delete trips b/c they are the ones who created the trip -->
                     <th scope="col">Action</th>
-                  </tr>
+                </tr>
+            </thead>
+            <tbody>
+
+            <!-- all trips in DB sent forward to html, need to loop through to access individually -->
+            {% for trip in trips %}
+            <!-- only trips that were created by user in session will be included in table -->
+                {% if trip.creator == user %}
+                <tr>
+                    <th scope="row"><a href="/trips/{{trip.id}}">{{trip.dest}}</a></th>
+                    <td>{{trip.start}}</td>
+                    <td>{{trip.end}}</td>
+                    <td>{{trip.plan}}</td>
+                    <td>
+                        <a class="btn btn-dark" href="trips/edit/{{trip.id}}">Edit</a>
+                        <a class="btn btn-light ml-2" href="trips/delete/{{trip.id}}">Delete Trip</a>
+                    </td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Table for trips arranged by users not in session -->
+        <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>
+                        <th scope="col">Plan</th>
+                        <!-- no 'actions' available to user b/c they didnt arrange trip; can only view trip details -->
+                    </tr>
                 </thead>
                 <tbody>
-
+    
                 <!-- all trips in DB sent forward to html, need to loop through to access individually -->
                 {% for trip in trips %}
                 <!-- only trips that were created by user in session will be included in table -->
-                    {% if trip.creator == user %}
+                    {% if trip.creator != user %}
                     <tr>
                         <th scope="row"><a href="/trips/{{trip.id}}">{{trip.dest}}</a></th>
                         <td>{{trip.start}}</td>
                         <td>{{trip.end}}</td>
                         <td>{{trip.plan}}</td>
-                        <td>
-                            <a class="btn btn-dark" href="trips/edit/{{trip.id}}">Edit</a>
-                            <a class="btn btn-light ml-2" href="trips/delete/{{trip.id}}">Delete Trip</a>
-                        </td>
                     </tr>
                     {% endif %}
                 {% endfor %}
                 </tbody>
-              </table>
+            </table>
               
     </div><!-- End of container -->
 </body>
