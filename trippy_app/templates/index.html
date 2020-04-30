@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- BOOTSTRAP for CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Trippy</title>
 </head>
@@ -26,7 +27,16 @@
 
             <form action="/register" method="POST">
                 {% csrf_token %}
-                <label>First Name</label>
+                <label>First Name
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'first_name' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </label>
+
                     <input class="form-control" type="text" name="first_name">
 
                 <label>Last Name</label>
@@ -51,6 +61,7 @@
 
             <form action="/login" method="POST">
                 {% csrf_token %}
+                <!-- Input fields only include EMAIL and PASSWORD for validations -->
                 <label>Email</label>
                     <input class="form-control" type="text" name="email_input">
 

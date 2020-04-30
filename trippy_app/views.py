@@ -16,7 +16,7 @@ def register(request):
         errors = User.objects.reg_validator(request.POST)
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/')
         else:
             user = User.objects.create(
@@ -34,7 +34,7 @@ def login(request):
         errors = User.objects.log_validator(request.POST)
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/')
 
         else:
