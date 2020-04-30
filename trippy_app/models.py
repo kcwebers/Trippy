@@ -7,6 +7,7 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 # email must be formatted properly
 
 class UserManager(models.Manager):
+    # VALIDATION FOR REGISTRATION
     def reg_validator(self, postData):
         errors = {}
     #------ Names ------
@@ -18,7 +19,8 @@ class UserManager(models.Manager):
         if not EMAIL_REGEX.match(postData['email']):
             errors['email'] = "Please input a valid email address!"
         else:
-            for user in User.objects.all():
+            # searches for email in DB to see if it already exists
+            for user in User.objects.all(): 
                 if postData['email'] == user.email:
                     errors['email'] = "Email already exists in our system! Please login in!"
     #------- Password -------
@@ -28,23 +30,29 @@ class UserManager(models.Manager):
             errors['pass_conf'] = "Passwords do not match!"
         return errors
 
+    # VALIDATION FOR LOGIN
     def log_validator(slef, postData):
         errors = {}
+        # queries for user in DB based on the input email
+        # if email not in DB or there is not a proper input, validation will be hit
         user_info = User.objects.filter(email = postData['email_input'])
         if not user_info:
             errors['email_input'] = "Email does not exist! Please register before logging in!"
         else:
-            user = User.objects.get(email=postData['email_input'])
+            # query for user based on email input
+            user = User.objects.get(email=postData['email_input']) 
             if not bcrypt.checkpw(postData['password_input'].encode(), user.password.encode()):
                 errors['password_input'] = "Password or Email information is not correct!"
         return errors
     
+    # VALIDATION TO SEE IF USER IS LOGGED INTO SITE
     def not_logged_validator(self):
         errors = {}
         errors['no'] = "Please login before entering site!"
         return errors
 
 class TripManager(models.Manager):
+    # VALIDATION FOR CREATING/EDITTING A TRIP
     def trip_validator(self, postData):
         errors = {}
         #---- Destination ----
@@ -68,6 +76,7 @@ class User(models.Model):
     password=models.CharField(max_length=255)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
+    #created_trips --> related to 'creator' field in Trip model
     objects = UserManager()
 
 class Trip(models.Model):
