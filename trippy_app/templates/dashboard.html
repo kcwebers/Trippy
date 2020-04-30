@@ -24,7 +24,10 @@
                   </tr>
                 </thead>
                 <tbody>
+
+                <!-- all trips in DB sent forward to html, need to loop through to access individually -->
                 {% for trip in trips %}
+                <!-- only trips that were created by user in session will be included in table -->
                     {% if trip.creator == user %}
                     <tr>
                         <th scope="row"><a href="/trips/{{trip.id}}">{{trip.dest}}</a></th>
