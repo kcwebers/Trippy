@@ -9,20 +9,20 @@
 </head>
 <body>
     <div class="container">
+        <!-- 'Logout' and 'Home' buttons included at top of page for user ease of access -->
         <a class="btn btn-danger float-right mt-2 ml-2" href="/logout">Logout</a>
         <a class="btn btn-warning float-right mt-2 ml-2" href="/dashboard">Home</a>
-        <h1>Welcome {{user.first_name}}! Read about this trip!</h1>
+        <!-- User-in-session's name should appear at top of page -->
+        <h1>Welcome <span class="text-danger">{{user.first_name}}</span>! Read about this trip!</h1>
 
-
+        <!-- only one trip's information should be passed forward via a query based on the id# included in the url -->
         <h1 class="display-4">Destination:<span class="text-danger">{{trip.dest}}</span></h1>
 
         <div class="form-group">
 
             <label class="form-control">Start Date: <span class="text-danger">{{trip.start}}</span></label>
 
-
             <label class="form-control">End Date: <span class="text-danger">{{trip.end}}</span></label>
-            
 
             <label class="form-control">Trip Created On: <span class="text-danger">{{trip.created_at}}</span></label>
 
@@ -30,6 +30,7 @@
 
             <label class="form-control">Plan: <span class="text-danger">{{trip.plan}}</span></label>
 
+            <!-- for relationship field, need to access field w/i trip and then access fields w/i the related model (trip -> user (via 'creator' field) -> first name & last name) -->
             <label class="form-control">Created By: <span class="text-danger">{{trip.creator.first_name}} {{trip.creator.last_name}}</span></label>
         </div>
 
