@@ -9,10 +9,16 @@
 </head>
 <body>
     <div class="container">
+        <!-- 'Logout' and 'Home' buttons included at top of page for user ease of access -->
         <a class="btn btn-danger float-right mt-2 ml-2" href="/logout">Logout</a>
         <a class="btn btn-warning float-right mt-2 ml-2" href="/dashboard">Home</a>
-        <h1>Welcome {{user.first_name}}! Let's Edit Your Trip!</h1>
+        <!-- User-in-session's name should appear at top of page -->
+        <h1>Welcome <span class="text-danger">{{user.first_name}}</span>! Let's Edit Your Trip!</h1>
 
+        <!-- Jinja statements (%%) handle validations -->
+        <!-- Validations coordinate with views.py and models.py -->
+
+        <!-- Trip fields: destination, start date, end date, and plan -->
         <form action="/update_trip/{{trip.id}}" method="POST">
             {% csrf_token %}
             <label>Destination
@@ -24,6 +30,7 @@
                     {% endfor %}
                 {% endif %}
             </label>
+                <!-- 'value' field included in all input fields to pre-poulate with trip information that is to be edited -->
                 <input class="form-control" type="text" name="dest" value="{{trip.dest}}">
 
             <label>Start Date
@@ -35,6 +42,8 @@
                     {% endfor %}
                 {% endif %}
             </label>
+                <!-- in order to properly pre-populate 'date' type fields, DateTimeField data needs to be reformatted (see views.py under 'Edit Trip' to see how information was passed forward) -->
+                <!-- Because of formatted, 'start' and 'end' date fields were passed forward as individual variables -->
                 <input class="form-control" type="date" name="start" value="{{start}}">
 
             <label>End Date
@@ -57,9 +66,11 @@
                     {% endfor %}
                 {% endif %}
             </label>
+            <!-- Textarea doesn't need 'value' attribute and instead info added to field b/w open and closing tags '<> </>' -->
                 <textarea class="form-control" type="text" name="plan">{{trip.plan}}</textarea>
 
             <input class="btn btn-info mt-2" type="submit" value="Update Trip!">
+            <!-- 'Cancel' buttom simply redirects back to dashboard -->
             <a class="btn btn-danger mt-2" href="/dashboard">Cancel</a>
         </form>
 
