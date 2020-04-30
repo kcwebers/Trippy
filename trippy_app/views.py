@@ -152,7 +152,7 @@ def update_trip(request, id):
         errors = Trip.objects.trip_validator(request.POST)
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/trips/edit/' + str(id))
         else:
             user_id = request.session['user_id']

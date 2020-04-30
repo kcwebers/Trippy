@@ -13,27 +13,50 @@
         <a class="btn btn-warning float-right mt-2 ml-2" href="/dashboard">Home</a>
         <h1>Welcome {{user.first_name}}! Let's Edit Your Trip!</h1>
 
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li class="text-danger small"> {{ message }} </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
-
         <form action="/update_trip/{{trip.id}}" method="POST">
             {% csrf_token %}
-            <label>Destination</label>
+            <label>Destination
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'dest' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <input class="form-control" type="text" name="dest" value="{{trip.dest}}">
 
-            <label>Start Date</label>
+            <label>Start Date
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'start' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <input class="form-control" type="date" name="start" value="{{start}}">
 
-            <label>End Date</label>
+            <label>End Date
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'end' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <input class="form-control" type="date" name="end" value="{{end}}">
 
-            <label>Plan</label>
+            <label>Plan
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'plan' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <textarea class="form-control" type="text" name="plan">{{trip.plan}}</textarea>
 
             <input class="btn btn-info mt-2" type="submit" value="Update Trip!">
