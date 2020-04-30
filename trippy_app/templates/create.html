@@ -11,29 +11,52 @@
     <div class="container">
         <a class="btn btn-danger float-right mt-2 ml-2" href="/logout">Logout</a>
         <a class="btn btn-warning float-right mt-2 ml-2" href="/dashboard">Home</a>
-        <h1>Welcome {{user.first_name}}! Create a New Trip! </h1>
-
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li class="text-danger small"> {{ message }} </li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
+        <h1>Welcome <span class="text-danger">{{user.first_name}}</span>! Create a New Trip! </h1>
 
         <form action="/new_trip" method="POST">
             {% csrf_token %}
-            <label>Destination</label>
+            <label>Destination
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'dest' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <input class="form-control" type="text" name="dest">
 
-            <label>Start Date</label>
+            <label>Start Date
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'start' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <input class="form-control" type="date" name="start">
 
-            <label>End Date</label>
+            <label>End Date
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'end' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <input class="form-control" type="date" name="end">
 
-            <label>Plan</label>
+            <label>Plan
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.extra_tags == 'plan' %}
+                        <span class="text-danger small"> {{ message }} </span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </label>
                 <textarea class="form-control" type="text" name="plan" ></textarea>
 
             <input class="btn btn-info mt-2" type="submit" value="Create Trip!">

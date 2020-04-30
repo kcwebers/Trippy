@@ -12,12 +12,12 @@
     <div class="container">
     <h1 class="display-1">Welcome! Let's Travel</h1>
     {% if messages %}
-    {% for message in messages %}
-        {% if message.extra_tags == 'no' %}
-        <span class="text-danger small"> {{ message }} </span>
-        {% endif %}
-    {% endfor %}
-{% endif %}
+        {% for message in messages %}
+            {% if message.extra_tags == 'no' %}
+            <span class="text-danger small"> {{ message }} </span>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
 <!-- -----------------------------------------Register -->
     <div class="row">

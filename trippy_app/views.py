@@ -90,7 +90,7 @@ def new_trip(request):
         errors = Trip.objects.trip_validator(request.POST)
         if len(errors):
             for key, value in errors.items():
-                messages.error(request, value)
+                messages.error(request, value, extra_tags=key)
             return redirect('/trips/new')
         else:
             user_id = request.session['user_id']
