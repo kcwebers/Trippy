@@ -11,8 +11,13 @@
     <div class="container">
         <a class="btn btn-danger float-right mt-2 ml-2" href="/logout">Logout</a>
         <a class="btn btn-warning float-right mt-2 ml-2" href="/dashboard">Home</a>
+        <!-- User-in-session's name should appear at top of page -->
         <h1>Welcome <span class="text-danger">{{user.first_name}}</span>! Create a New Trip! </h1>
 
+        <!-- Jinja statements (%%) handle validations -->
+        <!-- Validations coordinate with views.py and models.py -->
+
+        <!-- Trip fields: destination, start date, end date, and plan -->
         <form action="/new_trip" method="POST">
             {% csrf_token %}
             <label>Destination
@@ -57,12 +62,15 @@
                     {% endfor %}
                 {% endif %}
             </label>
-                <textarea class="form-control" type="text" name="plan" ></textarea>
+            <!-- textarea field used instead of input field type 'text' to handle a larger input -->
+                <textarea class="form-control" type="text" name="plan"></textarea>
 
             <input class="btn btn-info mt-2" type="submit" value="Create Trip!">
-            <a class="btn btn-danger mt-2" href="/dashboard">Cancel</a>
-        </form>
 
-    </div><!-- End of container -->
+            <!-- 'Cancel' buttom simply redirects back to dashboard -->
+            <a class="btn btn-danger mt-2" href="/dashboard">Cancel</a>
+        </form> <!-- End of form -->
+
+    </div> <!-- End of container -->
 </body>
 </html>
