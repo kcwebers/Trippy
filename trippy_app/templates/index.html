@@ -28,27 +28,59 @@
             <form action="/register" method="POST">
                 {% csrf_token %}
                 <label>First Name
-                {% if messages %}
-                    {% for message in messages %}
-                        {% if message.extra_tags == 'first_name' %}
-                        <span class="text-danger small"> {{ message }} </span>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == 'first_name' %}
+                            <span class="text-danger small"> {{ message }} </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </label>
 
                     <input class="form-control" type="text" name="first_name">
 
-                <label>Last Name</label>
+                <label>Last Name
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == 'last_name' %}
+                            <span class="text-danger small"> {{ message }} </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </label>
                     <input class="form-control" type="text" name="last_name">
 
-                <label>Email</label>
+                <label>Email
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == 'email' %}
+                            <span class="text-danger small"> {{ message }} </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </label>
                     <input class="form-control" type="text" name="email">
 
-                <label>Password</label>
+                <label>Password
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == 'password' %}
+                            <span class="text-danger small"> {{ message }} </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </label>
                     <input class="form-control" type="password" name="password">
 
-                <label>Password Confirmation</label>
+                <label>Password Confirmation
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.extra_tags == 'pass_conf' %}
+                            <span class="text-danger small"> {{ message }} </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </label>
                     <input class="form-control" type="password" name="pass_conf">
 
                 <input class="btn btn-info mt-2" type="submit" value="Register!">
