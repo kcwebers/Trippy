@@ -24,6 +24,8 @@ def register(request):
                 messages.error(request, value, extra_tags=key)
             # redirect back to root route, where error messages will be rendered
             return redirect('/')
+
+        # if there are no errors
         else:
             # create the new user based on registration information, only if no errors are hit
             user = User.objects.create(
@@ -37,6 +39,7 @@ def register(request):
             # put new user's id into session, so it can ba accessed later
             request.session['user_id'] = user.id
             return redirect('/dashboard')
+            
     else: 
         # redirect back to root route if route is accessed outside of POST
         return redirect('/')
@@ -54,12 +57,14 @@ def login(request):
             # redirect back to root route, where error messages will be rendered
             return redirect('/')
 
+        # if there are no errors    
         else:
             # query for user based on the email that was provided 
             user = User.objects.get(email=request.POST['email_input'])
             # add user id into session so you can access is later
             request.session['user_id'] = user.id
             return redirect('/dashboard')
+
     else: 
         # redirect back to root route if route is accessed outside of POST
         return redirect('/')
@@ -73,6 +78,8 @@ def logout(request):
 # ============================================
 
 def dashboard(request):
+    # verify that there is a user id in session
+    # if there is no user id in session, it means no one is properly logged in and should be redirected back to the log/reg page
     if 'user_id' not in request.session:
         errors = User.objects.not_logged_validator()
         if len(errors):
@@ -80,8 +87,9 @@ def dashboard(request):
                 messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
-        user_id = request.session['user_id']
-        user = User.objects.get(id=user_id)
+        # query for user based on user_id in seesion
+        user = User.objects.get(id=request.session['user_id'])
+        # pass user forward, as well as all trips
         context = {
             'user' : user,
             'trips' : Trip.objects.all()
@@ -93,6 +101,8 @@ def dashboard(request):
 # ============================================
 
 def create_trip(request):
+    # verify that there is a user id in session
+    # if there is no user id in session, it means no one is properly logged in and should be redirected back to the log/reg page
     if 'user_id' not in request.session:
         errors = User.objects.not_logged_validator()
         if len(errors):
@@ -100,24 +110,33 @@ def create_trip(request):
                 messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
+        # first, pull the user id from session
         user_id = request.session['user_id']
+        # query for user based on user id
         user = User.objects.get(id=user_id)
+        # render page with user information passed forward as context for html
         context = {
             'user' : user
         }
         return render(request, 'create.html', context)
 
 def new_trip(request):
+    # verify that this route is being handled after a form submission (i.e. POST route)
     if request.POST:
+        # handles errors specifically for trip fields
         errors = Trip.objects.trip_validator(request.POST)
         if len(errors):
+            # pass forward 'key' values as 'extra_tags' so jinja can access on the front and access specific errors
             for key, value in errors.items():
                 messages.error(request, value, extra_tags=key)
+            # redirect back to trip creation page where errors will be rendered with html
             return redirect('/trips/new')
-        else:
-            user_id = request.session['user_id']
-            user = User.objects.get(id=user_id)
 
+        # if there are no errors
+        else:
+            # query for user based on user_id in session
+            user = User.objects.get(id=request.session['user_id'])
+            # create new trip based on information input into form
             trip = Trip.objects.create(
                 dest=request.POST['dest'],
                 start=request.POST['start'],
@@ -125,14 +144,21 @@ def new_trip(request):
                 plan=request.POST['plan'],
                 creator=user
             )
-
+            # redirect back to dashboard, where new trip should be displayed
             return redirect('/dashboard')
+
+    # if route accessed not on a POST
+    else:
+        # redirect back to dashboard where nothing should have changed
+        return redirect('/dashboard')
 
 # ============================================
 # Show Trip
 # ============================================
 
 def show_trip(request, id):
+    # verify that there is a user id in session
+    # if there is no user id in session, it means no one is properly logged in and should be redirected back to the log/reg page
     if 'user_id' not in request.session:
         errors = User.objects.not_logged_validator()
         if len(errors):
