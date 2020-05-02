@@ -9,23 +9,31 @@ import bcrypt
 # ============================================
 
 def index(request):
+    # nothing to add to context b/s login/registration is rendered on the index.html
     return render(request, 'index.html')
 
 def register(request):
+    # verifies that this route is being handled after a form submission (i.e. POST route)
     if request.POST:
+        # handles errors specifically for registration fields
         errors = User.objects.reg_validator(request.POST)
         if len(errors):
             for key, value in errors.items():
+                # pass forward 'key' values as 'extra_tags' so jinja can access on the front and access specific errors
                 messages.error(request, value, extra_tags=key)
+            # redirect back to root route, where error messages will be rendered
             return redirect('/')
         else:
+            # create the new user based on registration information, only if no errors are hit
             user = User.objects.create(
                 first_name=request.POST['first_name'],
                 last_name=request.POST['last_name'],
                 email=request.POST['email'],
+                # hash password prior to entering into database
                 password=bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt()).decode()
             )
 
+            # put new user's id into session, so it can ba accessed later
             request.session['user_id'] = user.id
             return redirect('/dashboard')
 
