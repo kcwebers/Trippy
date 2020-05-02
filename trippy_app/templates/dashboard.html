@@ -13,6 +13,13 @@
         <a class="btn btn-info float-right mt-2" href="/trips/new">Create New Trip</a>
         <!-- User-in-session's name should appear at top of page -->
         <h1>Welcome <span class="text-danger">{{user.first_name}}</span>! This is your Dashboard!</h1>
+           
+        <!-- error handler for user who attempts to delete trip that they did not create -->
+            {% if messages %}
+                {% for message in messages %}
+                    <span class="text-danger small"> {{ message }} </span>
+                {% endfor %}
+            {% endif %}
 
         <!-- Table for trips arranged by user-in-session -->
 

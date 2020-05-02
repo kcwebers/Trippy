@@ -251,10 +251,22 @@ def delete_trip(request, id):
     
     # if user is logged in
     else: 
-    # query for specfic trip based on id passed through URL
-    trip = Trip.objects.get(id=id)
-    # permanently delete trip from database
-    trip.delete()
-
-    # redirect back to dashboard where deleted trip should no longer appear
-    return redirect('/dashboard')
+        # query for specfic trip based on id passed through URL
+        trip = Trip.objects.get(id=id)
+        # query for user based on user_id in session
+        user = User.objects.get(id=request.session['user_id']) 
+        # verify that user is the user who created the trip, then allow them to delete
+        if trip.creator == user:
+            # permanently delete trip from database
+            trip.delete()
+            # redirect back to dashboard where deleted trip should no longer appear
+            return redirect('/dashboard')
+        # if user is not the one who create the trip
+        else:
+            # create error to handle user != trip's creator
+            errors = {'not_creator' : "You must be the creator of a trip in order to delete it!"}
+            for key, value in errors.items():
+                # pass the error message forward, no need for extra_tags as no other errors handled at '/dashboard'
+                messages.error(request, value)
+            # return to the dashboard without any changes, but include error message
+            return redirect('/dashboard') 
