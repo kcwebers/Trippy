@@ -13,10 +13,11 @@ def index(request):
     return render(request, 'index.html')
 
 def register(request):
-    # verifies that this route is being handled after a form submission (i.e. POST route)
+    # verify that this route is being handled after a form submission (i.e. POST route)
     if request.POST:
         # handles errors specifically for registration fields
         errors = User.objects.reg_validator(request.POST)
+        # check if any errors were added and passed forward
         if len(errors):
             for key, value in errors.items():
                 # pass forward 'key' values as 'extra_tags' so jinja can access on the front and access specific errors
@@ -36,19 +37,32 @@ def register(request):
             # put new user's id into session, so it can ba accessed later
             request.session['user_id'] = user.id
             return redirect('/dashboard')
+    else: 
+        # redirect back to root route if route is accessed outside of POST
+        return redirect('/')
 
 def login(request):
+    # verify that this route is being handled after a form submission (i.e. POST route)
     if request.POST:
+        # handles errors specifically for login fields
         errors = User.objects.log_validator(request.POST)
+        # check if any errors were added and passed forward
         if len(errors):
+            # pass forward 'key' values as 'extra_tags' so jinja can access on the front and access specific errors
             for key, value in errors.items():
                 messages.error(request, value, extra_tags=key)
+            # redirect back to root route, where error messages will be rendered
             return redirect('/')
 
         else:
+            # query for user based on the email that was provided 
             user = User.objects.get(email=request.POST['email_input'])
+            # add user id into session so you can access is later
             request.session['user_id'] = user.id
             return redirect('/dashboard')
+    else: 
+        # redirect back to root route if route is accessed outside of POST
+        return redirect('/')
 
 def logout(request):
     request.session.clear()
