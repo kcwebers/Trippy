@@ -70,7 +70,9 @@ def login(request):
         return redirect('/')
 
 def logout(request):
+    # removes user from session, preventing access to site
     request.session.clear()
+    # redirect back to log/reg page for user to login
     return redirect('/')
 
 # ============================================
@@ -238,7 +240,21 @@ def update_trip(request, id):
 # ============================================
 
 def delete_trip(request, id):
+    # verify that there is a user id in session
+    # if there is no user id in session, it means no one is properly logged in and should be redirected back to the log/reg page
+    if 'user_id' not in request.session:
+        errors = User.objects.not_logged_validator()
+        if len(errors):
+            for key, value in errors.items():
+                messages.error(request, value, extra_tags=key)
+            return redirect('/')
+    
+    # if user is logged in
+    else: 
+    # query for specfic trip based on id passed through URL
     trip = Trip.objects.get(id=id)
+    # permanently delete trip from database
     trip.delete()
 
+    # redirect back to dashboard where deleted trip should no longer appear
     return redirect('/dashboard')
