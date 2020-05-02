@@ -39,7 +39,7 @@ def register(request):
             # put new user's id into session, so it can ba accessed later
             request.session['user_id'] = user.id
             return redirect('/dashboard')
-            
+
     else: 
         # redirect back to root route if route is accessed outside of POST
         return redirect('/')
@@ -114,7 +114,7 @@ def create_trip(request):
         user_id = request.session['user_id']
         # query for user based on user id
         user = User.objects.get(id=user_id)
-        # render page with user information passed forward as context for html
+        # pass user information forward
         context = {
             'user' : user
         }
@@ -166,8 +166,9 @@ def show_trip(request, id):
                 messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
-        user_id = request.session['user_id']
-        user = User.objects.get(id=user_id)
+        # query for user based on user_id in session
+        user = User.objects.get(id=request.session['user_id'])
+        # pass forward user info, as well as all trip specified by id in url
         context = {
             'user' : user,
             'trip' : Trip.objects.get(id=id)
@@ -179,6 +180,8 @@ def show_trip(request, id):
 # ============================================
 
 def edit_trip(request, id):
+    # verify that there is a user id in session
+    # if there is no user id in session, it means no one is properly logged in and should be redirected back to the log/reg page
     if 'user_id' not in request.session:
         errors = User.objects.not_logged_validator()
         if len(errors):
@@ -186,35 +189,49 @@ def edit_trip(request, id):
                 messages.error(request, value, extra_tags=key)
             return redirect('/')
     else:
-
+        # pass forward user based on user_id in session, trip based on id from URL, start and end dates of that trip
         context = {
             'user' : User.objects.get(id=request.session['user_id']),
             'trip' : Trip.objects.get(id=id),
+            # .strftime is used to properly format DateTimeField so it can be smoothly passed forward
+            # reformatting allows information to autofill the type='date' field in a form
             'start' : Trip.objects.get(id=id).start.strftime("%Y-%m-%d"),
             'end' : Trip.objects.get(id=id).end.strftime("%Y-%m-%d"),
         }
         return render(request, 'edit.html', context)
 
 def update_trip(request, id):
+    # verify that this route is being handled after a form submission (i.e. POST route)
     if request.POST:
+        # handles errors specifically for trip fields
         errors = Trip.objects.trip_validator(request.POST)
         if len(errors):
+           # pass forward 'key' values as 'extra_tags' so jinja can access on the front and access specific errors
             for key, value in errors.items():
                 messages.error(request, value, extra_tags=key)
+            # redirect back to trip edit page where errors will be rendered with html
             return redirect('/trips/edit/' + str(id))
         else:
-            user_id = request.session['user_id']
-            user = User.objects.get(id=user_id)
-
+            # query for user based on user_id in session
+            user = User.objects.get(id=request.session['user_id'])
+            # query for trip based on the id passed through the URL
             trip = Trip.objects.get(id=id)
 
+            # override fields based on the inputs from form
             trip.dest=request.POST['dest']
             trip.start=request.POST['start']
             trip.end=request.POST['end']
             trip.plan=request.POST['plan']
+            # save trip with updatted fields to database
             trip.save()
             
+            # redirect to dashboard where changes should be reflected
             return redirect('/dashboard')
+
+     # if route accessed not on a POST
+    else:
+        # redirect back to dashboard where nothing should have changed
+        return redirect('/dashboard')
 
 # ============================================
 # Delete Trip
