@@ -87,5 +87,6 @@ class Trip(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now=True)
 
+    # field related to 'created_trips' field in the User model
     creator=models.ForeignKey(User, related_name="created_trips", on_delete=models.CASCADE)
     objects = TripManager()
